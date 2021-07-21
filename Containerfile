@@ -1,4 +1,4 @@
-FROM adoptopenjdk:11-jdk-hotspot-focal
+FROM registry.access.redhat.com/ubi8/openjdk-11-runtime:latest
 LABEL maintainer="Ken Moini" \
       description="Bamboo Agent Container Image"
 
