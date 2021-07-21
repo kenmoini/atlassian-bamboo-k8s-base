@@ -20,9 +20,10 @@ USER root
 # Create Bamboo home directory, user, and group
 RUN set -x && \
     mkdir ${BAMBOO_USER_HOME} && \
-    groupadd ${BAMBOO_GROUP} && \
-    adduser -d ${BAMBOO_USER_HOME} -g ${BAMBOO_GROUP} -r ${BAMBOO_USER} && \
-    chown -R ${BAMBOO_USER}:${BAMBOO_GROUP} ${BAMBOO_USER_HOME}
+    #groupadd ${BAMBOO_GROUP} && \
+    #adduser -d ${BAMBOO_USER_HOME} -g ${BAMBOO_GROUP} -r ${BAMBOO_USER} && \
+    adduser -d ${BAMBOO_USER_HOME} -r ${BAMBOO_USER} && \
+    chown -R ${BAMBOO_USER} ${BAMBOO_USER_HOME}
 
 # Update and install basic packages
 RUN set -x && \
