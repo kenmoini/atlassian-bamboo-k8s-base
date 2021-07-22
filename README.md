@@ -31,6 +31,8 @@ USER ${BAMBOO_USER}
 RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.mvn3.Maven 3.3" /usr/share/maven
 ```
 
+You may need to configure additional capabilities of the Agent: https://confluence.atlassian.com/bamboo/configuring-capabilities-289277148.html
+
 ## Running on OpenShift
 
 Running Atlassian Bamboo Agents and Builds on Openshift is likely not a good idea - the application requires a lot of permissions that could easily compromise your OpenShift cluster if Bamboo or your build/supply chain were to be compromised.  You have been warned...
@@ -70,9 +72,9 @@ Define an Instance with the Cluster and an Image - you can set the "Pool" to wha
 ```yaml
 serviceAccount: bamboo-sa
 securityContext:
-  runAsUser: 1001
-  runAsGroup: 1001
-  fsGroup: 1001
+  runAsUser: null
+  runAsGroup: null
+  fsGroup: null
 ```
 
 Click "Save and Start" - you should see the Pod spin up on your OpenShift cluster now.
