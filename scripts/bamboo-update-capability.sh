@@ -17,7 +17,7 @@ if [  $# -le 1 ]; then
 fi 
 
 if [ $# -le 2 ]; then
-	propertiesFilePath=~/init-bamboo-capabilities.properties
+	propertiesFilePath=/home/bamboo/init-bamboo-capabilities.properties
 else
 	propertiesFilePath=$3
 fi
