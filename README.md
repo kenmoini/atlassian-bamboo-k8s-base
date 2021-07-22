@@ -72,9 +72,18 @@ Define an Instance with the Cluster and an Image - you can set the "Pool" to wha
 ```yaml
 serviceAccount: bamboo-sa
 securityContext:
-  runAsUser: null
-  runAsGroup: null
+  runAsUser: 0
+  runAsGroup: 0
   fsGroup: null
+dnsPolicy: Default
+dnsConfig:
+  nameservers: null
+  searches: 
+    - kemo.labs
 ```
+
+You may have to set your own DNS servers/search domains to replace those, which are mine and not yours.  _*Also, the securityContext runs the container as root:root!*_
+
+Another note: the plugin does a merge of the definitions, which for some reason defaults to two Google DNS servers and defining another set won't override, just merge into the dnsConfig.nameservers list...which is very annoying...this is why dnsPolicy is set to Default to inherit the cluster-wide DNS configuration.
 
 Click "Save and Start" - you should see the Pod spin up on your OpenShift cluster now.

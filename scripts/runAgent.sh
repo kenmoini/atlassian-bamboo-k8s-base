@@ -21,6 +21,7 @@ fi
 
 if [ ! -f ${BAMBOO_CAPABILITIES} ]; then
     mkdir -p ${BAMBOO_AGENT_HOME}/bin
+    chmod 777 ${BAMBOO_AGENT_HOME}/bin
     cp ${INIT_BAMBOO_CAPABILITIES} ${BAMBOO_CAPABILITIES}
 fi
 

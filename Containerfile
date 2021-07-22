@@ -20,7 +20,7 @@ USER root
 
 # Create Bamboo home directory, user, and group
 RUN set -x && \
-    mkdir ${BAMBOO_USER_HOME} && \
+    mkdir -p ${BAMBOO_USER_HOME} && \
     groupadd -g 1001 ${BAMBOO_GROUP} && \
     adduser -u 1001 -g 1001 -d ${BAMBOO_USER_HOME} -r ${BAMBOO_USER} && \
     chown -R ${BAMBOO_USER} ${BAMBOO_USER_HOME}
