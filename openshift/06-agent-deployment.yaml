@@ -1,0 +1,92 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bamboo-agent
+  labels:
+    app: bamboo-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bamboo-agent
+  template:
+    metadata:
+      labels:
+        app: bamboo-agent
+    spec:
+      restartPolicy: Always
+      serviceAccount: bamboo-sa
+      serviceAccountName: bamboo-sa
+      priority: 0
+      schedulerName: default-scheduler
+      enableServiceLinks: true
+      terminationGracePeriodSeconds: 30
+      dnsConfig:
+        searches:
+          - kemo.labs
+      preemptionPolicy: PreemptLowerPriority
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      containers:
+        - name: bamboo-agent
+          image: 'quay.io/kenmoini/atlassian-bamboo-k8s-image:latest'
+          args:
+            - 'http://bamboo.kemo.labs:8085'
+          resources:
+            limits:
+              cpu: '2'
+              memory: 4Gi
+            requests:
+              cpu: '1'
+              memory: 2Gi
+          volumeMounts:
+            - name: bamboo-agent-home
+              mountPath: /home/bamboo/bamboo-agent-home
+            - name: kube-api-access
+              readOnly: true
+              mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      volumes:
+        - name: bamboo-agent-home
+          persistentVolumeClaim:
+            claimName: bamboo-agent-home
+        - name: kube-api-access
+          projected:
+            sources:
+              - serviceAccountToken:
+                  expirationSeconds: 3607
+                  path: token
+              - configMap:
+                  name: kube-root-ca.crt
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+              - downwardAPI:
+                  items:
+                    - path: namespace
+                      fieldRef:
+                        apiVersion: v1
+                        fieldPath: metadata.namespace
+              - configMap:
+                  name: openshift-service-ca.crt
+                  items:
+                    - key: service-ca.crt
+                      path: service-ca.crt
+            defaultMode: 420
+      dnsPolicy: Default
+      tolerations:
+        - key: node.kubernetes.io/not-ready
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 300
+        - key: node.kubernetes.io/unreachable
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 300
+        - key: node.kubernetes.io/memory-pressure
+          operator: Exists
+          effect: NoSchedule
