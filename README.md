@@ -2,7 +2,7 @@
 
 _*This is the most cursed thing ever devised.  Please get a better SCM-CI/CD-DevOps platform...like, Jenkins is even better than this shit...*_
 
-> How do you run Atlassian Agents and Builds on a Kubernetes platform like OpenShift?  First, draw a pentogram...
+> How do you run Atlassian Agents and Builds on a Kubernetes platform like OpenShift?  First, draw a pentogram on the ground in front of you and then...
 
 ## Base Container Image
 
@@ -41,7 +41,7 @@ In case you have a penchant for pain, here's how you go about doing it anyway...
 
 ### Apply OpenShift Manifests
 
-First you'll need to create a Project, Roles, RoleBindings, and SCC definitions in your cluster - you can do this by running:
+First, as cluster-admin, you'll need to create a Project, Roles, RoleBindings, and SCC definitions in your cluster - you can do this by running:
 
 ```bash
 oc apply -f openshift/01-project.yaml
@@ -53,9 +53,9 @@ oc apply -f openshift/05-scc-sb.yaml
 
 > *_NOTE:_* The SecurityContextConstraints that are defined basically give the ServiceAccount the ability to run any workload with some root permissions - apply at your own risk!
 
-#### Deployment-based Agent
+#### K8s Deployment-based Agent
 
-Now, if you'd like to just use a specific set of Agents provisioned on a cluster, you can also use the deployment objects in the `openshift/` folder - just make sure to edit the needed parts, specifically around `spec.container.args`
+Now, if you'd like to just use a specific set of Agents provisioned on a cluster, you can also use the 06 and 07 prefixed objects in the `openshift/` folder - just make sure to edit the needed parts, specifically around `spec.container.args`
 
 To run the agent deployment as it sits, you need to disable Remote Agent Token Verification - or you can pass the token in via an environment variable called `$BAMBOO_SECURITY_TOKEN`.
 
@@ -92,6 +92,6 @@ dnsConfig:
 
 You may have to set your own DNS servers/search domains to replace those, which are mine and not yours.  _*Also, the securityContext runs the container as root:root!*_
 
-Another note: the plugin does a merge of the definitions, which for some reason defaults to two Google DNS servers and defining another set won't override, just merge into the dnsConfig.nameservers list...which is very annoying...this is why dnsPolicy is set to Default to inherit the cluster-wide DNS configuration.
+Another note: the plugin does a merge of the definitions, which for some reason defaults to two Google DNS servers and defining another set won't override, just merge into the dnsConfig.nameservers list...which is very annoying...this is why dnsPolicy is set to Default to inherit the cluster-wide DNS configuration.  If you'd rather define fully custom Pod specs then the Deployment-based Option may be the best for your use case.
 
 Click "Save and Start" - you should see the Pod spin up on your OpenShift cluster now.
