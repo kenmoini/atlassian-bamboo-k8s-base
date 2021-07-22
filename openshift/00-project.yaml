@@ -1,0 +1,9 @@
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  annotations:
+    openshift.io/description: "Namespace/Project for all Bamboo agents"
+    openshift.io/display-name: "Bamboo Agents"
+  name: bamboo-agent
+spec: {}
+status: {}

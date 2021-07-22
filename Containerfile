@@ -7,6 +7,7 @@ ENV BAMBOO_GROUP=bamboo
 
 ENV BAMBOO_USER_HOME=/home/${BAMBOO_USER}
 ENV BAMBOO_AGENT_HOME=${BAMBOO_USER_HOME}/bamboo-agent-home
+ENV HOME ${BAMBOO_USER_HOME}
 
 ENV INIT_BAMBOO_CAPABILITIES=${BAMBOO_USER_HOME}/init-bamboo-capabilities.properties
 ENV BAMBOO_CAPABILITIES=${BAMBOO_AGENT_HOME}/bin/bamboo-capabilities.properties
@@ -20,9 +21,8 @@ USER root
 # Create Bamboo home directory, user, and group
 RUN set -x && \
     mkdir ${BAMBOO_USER_HOME} && \
-    #groupadd ${BAMBOO_GROUP} && \
-    #adduser -d ${BAMBOO_USER_HOME} -g ${BAMBOO_GROUP} -r ${BAMBOO_USER} && \
-    adduser -d ${BAMBOO_USER_HOME} -r ${BAMBOO_USER} && \
+    groupadd -g 1001 ${BAMBOO_GROUP} && \
+    adduser -u 1001 -g 1001 -d ${BAMBOO_USER_HOME} -r ${BAMBOO_USER} && \
     chown -R ${BAMBOO_USER} ${BAMBOO_USER_HOME}
 
 # Update and install basic packages
@@ -56,9 +56,6 @@ RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.jdk.JDK 1.8" ${JAVA_
 
 # Set Git Config
 RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.git.executable" /usr/bin/git
-
-# Switch to UBI User
-USER 1001
 
 # Entry into the agent initiation script
 ENTRYPOINT ["./runAgent.sh"]
