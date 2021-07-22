@@ -12,6 +12,7 @@ if [ -z ${1+x} ]; then
 fi
 
 if [ ! -f ${BAMBOO_CAPABILITIES} ]; then
+    mkdir -p ${BAMBOO_AGENT_HOME}/bin
     cp ${INIT_BAMBOO_CAPABILITIES} ${BAMBOO_CAPABILITIES}
 fi
 
