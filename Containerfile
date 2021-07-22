@@ -61,6 +61,8 @@ RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.git.executable" /usr
 RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.bash" '/bin/bash'
 RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.sh" '/bin/sh'
 RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.id" '/bin/id'
+RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.wget" '/bin/wget'
+RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.curl" '/bin/curl'
 
 # Entry into the agent initiation script
 ENTRYPOINT ["./runAgent.sh"]

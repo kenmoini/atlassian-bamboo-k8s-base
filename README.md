@@ -53,6 +53,14 @@ oc apply -f openshift/05-scc-sb.yaml
 
 > *_NOTE:_* The SecurityContextConstraints that are defined basically give the ServiceAccount the ability to run any workload with some root permissions - apply at your own risk!
 
+#### Deployment-based Agent
+
+Now, if you'd like to just use a specific set of Agents provisioned on a cluster, you can also use the deployment objects in the `openshift/` folder - just make sure to edit the needed parts, specifically around `spec.container.args`
+
+To run the agent deployment as it sits, you need to disable Remote Agent Token Verification - or you can pass the token in via an environment variable called `$BAMBOO_SECURITY_TOKEN`.
+
+If you'd rather manage Kubernetes agents from Bamboo, you'll need some sort of plugin.
+
 ### Install Bamboo Kubernetes Plugin
 
 So I've tried the Per Build Container project by Atlassian and it didn't work - I suggest buying the "Kubernetes (Agents) for Bamboo" by Windtunnel Technologies.
