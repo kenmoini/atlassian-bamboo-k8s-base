@@ -33,6 +33,9 @@ RUN set -x && \
       git \
       wget \
       procps-ng \
+      podman \
+      buildah \
+      skopeo \
   	&& microdnf clean all \
   	&& rm -rf /var/cache/yum
 
@@ -58,11 +61,14 @@ RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.jdk.JDK 1.8" ${JAVA_
 RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.git.executable" /usr/bin/git
 
 # Set some other executable config caps
-RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.bash" '/bin/bash'
-RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.sh" '/bin/sh'
-RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.id" '/bin/id'
-RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.wget" '/bin/wget'
-RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.curl" '/bin/curl'
+RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.bash" /bin/bash
+RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.sh" /bin/sh
+RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.id" /bin/id
+RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.wget" /bin/wget
+RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.curl" /bin/curl
+RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.podman" /bin/podman
+RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.buildah" /bin/buildah
+RUN ${BAMBOO_USER_HOME}/bamboo-update-capability.sh "system.builder.command.skopeo" /bin/skopeo
 
 # Entry into the agent initiation script
 ENTRYPOINT ["./runAgent.sh"]
